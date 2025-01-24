@@ -1,0 +1,143 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bot {
+  id              Int       @id @default(autoincrement())
+  isim            String
+  token           String    @unique
+  aktif           Boolean   @default(true)
+  webhook_url     String?
+  welcome_message String?
+  openai_prompt   String?
+  kullanicilar    BotKullanici[]
+  mesajlar        Mesaj[]
+  komutlar        Komut[]
+  webhook         Webhook?
+  olusturma_tarihi DateTime @default(now())
+  guncelleme_tarihi DateTime @updatedAt
+
+  @@map("botlar")
+}
+
+model Kullanici {
+  id              Int       @id @default(autoincrement())
+  telegram_id     String    @unique
+  kullanici_adi   String?
+  ad              String?
+  soyad           String?
+  dil             String    @default("tr")
+  aktif           Boolean   @default(true)
+  botlar          BotKullanici[]
+  mesajlar        Mesaj[]
+  olusturma_tarihi DateTime @default(now())
+  son_gorulme     DateTime @default(now())
+
+  @@map("kullanicilar")
+}
+
+model BotKullanici {
+  id              Int       @id @default(autoincrement())
+  bot_id          Int
+  kullanici_id    Int
+  engelli         Boolean   @default(false)
+  mesaj_sayisi    Int       @default(0)
+  son_etkilesim   DateTime @default(now())
+  bot             Bot       @relation(fields: [bot_id], references: [id], onDelete: Cascade)
+  kullanici       Kullanici @relation(fields: [kullanici_id], references: [id], onDelete: Cascade)
+
+  @@unique([bot_id, kullanici_id])
+  @@map("bot_kullanicilar")
+}
+
+model Mesaj {
+  id              Int       @id @default(autoincrement())
+  bot_id          Int
+  kullanici_id    Int
+  mesaj           String
+  mesaj_tipi      String    @default("text")
+  yonlendirme_id  String?
+  medya_url       String?
+  gonderim_tarihi DateTime @default(now())
+  bot             Bot       @relation(fields: [bot_id], references: [id], onDelete: Cascade)
+  kullanici       Kullanici @relation(fields: [kullanici_id], references: [id], onDelete: Cascade)
+
+  @@map("mesajlar")
+}
+
+model MesajSablonu {
+  id              Int       @id @default(autoincrement())
+  baslik          String
+  icerik          String
+  medya_tipleri   String[]
+  medya_urls      String[]
+  butonlar        Json?
+  olusturma_tarihi DateTime @default(now())
+  son_guncelleme  DateTime @updatedAt
+
+  @@map("mesaj_sablonlari")
+}
+
+model ZamanlanmisMesaj {
+  id              Int       @id @default(autoincrement())
+  sablon_id       Int
+  bot_ids         Int[]
+  gonderim_zamani DateTime
+  durum           String    @default("bekliyor")
+  olusturma_tarihi DateTime @default(now())
+
+  @@map("zamanlanmis_mesajlar")
+}
+
+model Komut {
+  id              Int       @id @default(autoincrement())
+  bot_id          Int
+  komut           String
+  aciklama        String
+  cevap           String
+  aktif           Boolean   @default(true)
+  bot             Bot       @relation(fields: [bot_id], references: [id], onDelete: Cascade)
+
+  @@unique([bot_id, komut])
+  @@map("komutlar")
+}
+
+model Webhook {
+  id              Int       @id @default(autoincrement())
+  bot_id          Int       @unique
+  url             String
+  aktif           Boolean   @default(true)
+  son_guncelleme  DateTime @updatedAt
+  bot             Bot       @relation(fields: [bot_id], references: [id], onDelete: Cascade)
+
+  @@map("webhooks")
+}
+
+model GuvenlikOlayi {
+  id              Int       @id @default(autoincrement())
+  tip             String
+  detay           String
+  onem            String    @default("dusuk")
+  ip              String?
+  kullanici_id    Int?
+  tarih           DateTime @default(now())
+
+  @@map("guvenlik_olaylari")
+}
+
+model SistemAyari {
+  id              Int       @id @default(autoincrement())
+  anahtar         String    @unique
+  deger           String
+  aciklama        String?
+  guncelleme_tarihi DateTime @updatedAt
+
+  @@map("sistem_ayarlari")
+}

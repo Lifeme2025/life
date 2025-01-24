@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #4F46E5;
+  --primary-light: #6366F1;
+  --secondary: #0EA5E9;
+  --accent: #8B5CF6;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --dark-bg: #0F172A;
+  --dark-surface: #1E293B;
+  --dark-surface-soft: #334155;
+  --dark-text: #E2E8F0;
+  --dark-text-soft: #94A3B8;
+}
+
+@layer base {
+  body {
+    @apply antialiased text-gray-900 dark:text-dark-text bg-gray-50 dark:bg-dark-bg transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/80 dark:bg-dark-surface/80 backdrop-blur-lg border border-gray-200/50 dark:border-white/[0.05];
+  }
+
+  .glass-button {
+    @apply bg-white/90 dark:bg-dark-surface-soft/90 hover:bg-white dark:hover:bg-dark-surface-soft backdrop-blur-lg shadow-lg shadow-gray-200/50 dark:shadow-black/30;
+  }
+
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-dark-text-soft hover:bg-gray-100/50 dark:hover:bg-white/[0.02] transition-all duration-200;
+  }
+
+  .nav-item.active {
+    @apply bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-light;
+  }
+
+  .card {
+    @apply glass-panel rounded-2xl shadow-xl shadow-gray-200/50 dark:shadow-black/30 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300;
+  }
+
+  .button-primary {
+    @apply flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .button-secondary {
+    @apply flex items-center justify-center gap-2 px-4 py-2.5 glass-button rounded-xl hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .button-error {
+    @apply flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-error to-red-500 hover:from-red-500 hover:to-error text-white rounded-xl shadow-lg shadow-error/25 hover:shadow-xl hover:shadow-error/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .input {
+    @apply px-4 py-2.5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-surface-soft rounded-xl focus:ring-2 focus:ring-primary/50 dark:focus:ring-primary/30 transition-all duration-200;
+  }
+}
+
+/* Left Sidebar Scrollbar */
+.left-sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+.left-sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.left-sidebar-scroll::-webkit-scrollbar-track {
+  @apply bg-transparent;
+  border-radius: 2px;
+}
+
+.left-sidebar-scroll::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-b from-primary/30 to-secondary/30 rounded-full;
+  box-shadow: 
+    0 0 5px rgba(79, 70, 229, 0.3),
+    0 0 10px rgba(79, 70, 229, 0.2),
+    0 0 15px rgba(79, 70, 229, 0.1),
+    inset 0 0 5px rgba(255, 255, 255, 0.2);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+.left-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  @apply bg-gradient-to-b from-primary/50 to-secondary/50;
+  box-shadow: 
+    0 0 10px rgba(79, 70, 229, 0.5),
+    0 0 20px rgba(79, 70, 229, 0.3),
+    0 0 30px rgba(79, 70, 229, 0.2),
+    inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Right Sidebar Scrollbar */
+.right-sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79, 70, 229, 0.3) transparent;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+.right-sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.right-sidebar-scroll::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.right-sidebar-scroll::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-b from-primary/30 to-secondary/30 rounded-full;
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.5),
+              0 0 20px rgba(79, 70, 229, 0.3),
+              0 0 30px rgba(79, 70, 229, 0.1);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+.right-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  @apply bg-gradient-to-b from-primary/50 to-secondary/50;
+  box-shadow: 0 0 15px rgba(79, 70, 229, 0.8),
+              0 0 30px rgba(79, 70, 229, 0.6),
+              0 0 45px rgba(79, 70, 229, 0.4);
+}
+
+/* Main Content Scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--primary), var(--secondary));
+  border-radius: 3px;
+  box-shadow: 
+    0 0 5px rgba(79, 70, 229, 0.5),
+    0 0 10px rgba(79, 70, 229, 0.3),
+    0 0 15px rgba(79, 70, 229, 0.1),
+    inset 0 0 5px rgba(255, 255, 255, 0.2);
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, var(--primary-light), var(--secondary));
+  box-shadow: 
+    0 0 10px rgba(79, 70, 229, 0.8),
+    0 0 20px rgba(79, 70, 229, 0.6),
+    0 0 30px rgba(79, 70, 229, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Neon Pulse Animation */
+@keyframes neon-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px rgba(79, 70, 229, 0.5),
+      0 0 10px rgba(79, 70, 229, 0.3),
+      0 0 15px rgba(79, 70, 229, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 10px rgba(79, 70, 229, 0.8),
+      0 0 20px rgba(79, 70, 229, 0.6),
+      0 0 30px rgba(79, 70, 229, 0.4);
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Performance Optimizations */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.will-change-transform {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  perspective: 1000px;
+}
